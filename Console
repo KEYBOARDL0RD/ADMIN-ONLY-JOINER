@@ -1,4 +1,3 @@
-
 function lord() {
 let socket = new WebSocket("wss://rblxwild.com/socket.io/?EIO=4&transport=websocket");
 authtoken = "AuthToken Here"
